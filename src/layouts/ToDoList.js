@@ -15,7 +15,7 @@ const ToDoList = () => {
         <div className='mt-5'>
             <h1 className='text-center mb-4'>My To Do List</h1>
             <div className='todolist-wrapper container'>
-                {todolist.length > 0 && todolist !==null  ?
+                {todolist.length > 0 && todolist ?
                     (todolist.map(item => (
                             <div key={item.id} className='card p-3 mb-3'>
                                 <div className='item-title d-flex flex-wrap justify-content-between'>
