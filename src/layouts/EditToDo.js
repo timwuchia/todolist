@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import uuidv4 from 'uuid/v4';
+import { Redirect } from 'react-router-dom';
 
-const AddToDO = (props) => {
+const EditToDo = (props) => {
 
-    const generatedID = uuidv4();
+    const localStorageToDoList = JSON.parse(localStorage.getItem('todolist'));
+    const currentItem = localStorageToDoList.find(item => item.id === props.match.params.id);
 
     const [listData, setListData] = useState({
-        id:generatedID,
-        title:'',
-        description: ''
+        id: currentItem.id,
+        title:currentItem.title,
+        description: currentItem.description,
     });
-
-    const { id ,title, description } = listData;
-
+    const { title, description } = listData;
     const onChangeTitle = (e) => {
         setListData({
             ...listData,
@@ -25,28 +24,25 @@ const AddToDO = (props) => {
             description: e.target.value
         })
     }
-
     const onSubmit = (e) => {
         e.preventDefault();
-        if(localStorage.getItem('todolist')===null){
-            console.log('to do list does not exist now!');
-            let todolist = []
-            localStorage.setItem('todolist', JSON.stringify(todolist) );
+        const updatedData = listData
+        const todolist = JSON.parse(localStorage.getItem('todolist'));
+        for (var i in todolist) {
+            if( todolist[i].id == props.match.params.id){
+                todolist[i] =updatedData;
+                break;
+            }
         }
-
-        var todolist = [];
-        todolist = JSON.parse(localStorage.getItem('todolist'));
-        todolist.push(listData)
-        console.log(todolist);
         localStorage.setItem('todolist',JSON.stringify(todolist));
         props.history.push('/todolist');
     }
-
+    
     return(
         <div className='container mt-5'>
             <div className='card p-3'>
-                <h1 className="text-center mb-3">Add A Thing To Do</h1>
-                <form onSubmit={onSubmit} >
+                <h1 className="text-center mb-3">Edit</h1>
+                <form onSubmit={onSubmit}>
                     <div className='form-group'>
                         <input 
                             type="text" 
@@ -69,11 +65,11 @@ const AddToDO = (props) => {
                         >
                         </textarea>
                     </div>
-                    <input className="btn btn-primary" type="submit"/>
+                    <input className="btn btn-primary" type="submit" value="Update" />
                 </form>
             </div>
         </div>
     )
 }
 
-export default AddToDO;
+export default EditToDo
