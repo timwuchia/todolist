@@ -29,7 +29,7 @@ const EditToDo = (props) => {
         const updatedData = listData
         const todolist = JSON.parse(localStorage.getItem('todolist'));
         for (var i in todolist) {
-            if( todolist[i].id == props.match.params.id){
+            if( todolist[i].id === props.match.params.id){
                 todolist[i] =updatedData;
                 break;
             }
